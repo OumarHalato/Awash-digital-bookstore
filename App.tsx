@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { BOOKS, CATEGORIES } from './constants';
 import { Book } from './types';
 import BookCard from './components/BookCard';
@@ -36,7 +36,6 @@ const App: React.FC = () => {
   const addToInteractions = (book: Book) => {
     setInteractedBooks(prev => {
       if (prev.find(b => b.id === book.id)) return prev;
-      // Keep last 10 interactions to avoid token overflow but provide good context
       const newInteractions = [book, ...prev].slice(0, 10);
       return newInteractions;
     });
@@ -92,17 +91,10 @@ const App: React.FC = () => {
     return result;
   }, [activeCategory, searchQuery, sortBy, priceRange, minRating]);
 
-  const clearFilters = () => {
-    setActiveCategory('all');
-    setPriceRange([0, 1000]);
-    setMinRating(0);
-    setSearchQuery('');
-  };
-
   const isFiltered = activeCategory !== 'all' || minRating > 0 || priceRange[0] > 0 || priceRange[1] < 1000;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-['Inter','Noto_Sans_Ethiopic',sans-serif]">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -134,50 +126,41 @@ const App: React.FC = () => {
           </div>
 
           <nav className="flex items-center gap-4" aria-label="የተጠቃሚ ምናሌ">
-            <button 
-              className="p-2 text-slate-700 hover:text-blue-600 transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
-              aria-label="የግዢ ቅርጫት (Shopping Cart)"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
+            <button className="p-2 text-slate-700 hover:text-blue-600 transition-colors relative rounded-full focus:ring-2 focus:ring-blue-500">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full border-2 border-white"></span>
             </button>
-            <button 
-              className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="የተጠቃሚ ፕሮፋይል"
-            ></button>
+            <button className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300"></button>
           </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white py-16 px-4 overflow-hidden" aria-labelledby="hero-title">
+      <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <ScrollReveal className="md:w-1/2 space-y-6">
-            <h2 id="hero-title" className="text-4xl md:text-5xl font-extrabold leading-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">
               የእውቀት አዋሽ፣ <br/>የንባብ ምንጭ።
             </h2>
             <p className="text-blue-100 text-lg max-w-lg leading-relaxed">
-              ምርጥ የኢትዮጵያ እና የአለም መጻሕፍትን በዲጅታል አማራጭ እዚሁ ያግኙ። ከታሪክ እስከ ልብ ወለድ፣ ከልጆች እስከ ራስን ማገዝ ድንቅ ስብስቦችን አቅርበንልዎታል።
+              ምርጥ የኢትዮጵያ እና የአለም መጻሕፍትን በዲጅታል አማራጭ እዚሁ ያግኙ። ከታሪክ እስከ ልብ ወለድ ድንቅ ስብስቦችን አቅርበንልዎታል።
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-8 py-3 bg-white text-blue-900 font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-xl focus:outline-none focus:ring-4 focus:ring-white/20">
+              <button className="px-8 py-3 bg-white text-blue-900 font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-xl">
                 አሁኑኑ ይጀምሩ
               </button>
               <button 
                 onClick={() => setIsLibrarianOpen(true)}
-                aria-expanded={isLibrarianOpen}
-                className="px-8 py-3 bg-blue-600/30 border border-blue-400/30 text-white font-bold rounded-xl hover:bg-blue-600/50 transition-colors backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-blue-400/50"
+                className="px-8 py-3 bg-blue-600/30 border border-blue-400/30 text-white font-bold rounded-xl hover:bg-blue-600/50 transition-colors backdrop-blur-sm"
               >
                 AI ረዳትን ይጠይቁ
               </button>
             </div>
           </ScrollReveal>
-          <div className="md:w-1/2 relative" aria-hidden="true">
+          <div className="md:w-1/2 relative hidden md:block">
              <ScrollReveal className="relative z-10 grid grid-cols-2 gap-4" delay={200}>
-                <img src="https://picsum.photos/seed/h1/300/400" alt="" className="rounded-2xl shadow-2xl rotate-[-5deg] hover:rotate-0 transition-transform duration-500" />
-                <img src="https://picsum.photos/seed/h2/300/400" alt="" className="rounded-2xl shadow-2xl rotate-[5deg] translate-y-8 hover:rotate-0 transition-transform duration-500" />
+                <img src="https://picsum.photos/seed/h1/300/400" alt="" className="rounded-2xl shadow-2xl rotate-[-5deg]" />
+                <img src="https://picsum.photos/seed/h2/300/400" alt="" className="rounded-2xl shadow-2xl rotate-[5deg] translate-y-8" />
              </ScrollReveal>
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/20 blur-[120px] rounded-full"></div>
           </div>
@@ -190,50 +173,25 @@ const App: React.FC = () => {
           {/* Sidebar */}
           <aside className="md:w-64 flex-shrink-0">
             <ScrollReveal className="space-y-6 sticky top-24">
-              {/* Sidebar Header with Clear */}
               <div className="flex items-center justify-between px-2 mb-2">
                 <h4 className="font-bold text-slate-900 uppercase text-xs tracking-wider">ማጣሪያዎች</h4>
-                {isFiltered && (
-                  <button 
-                    onClick={clearFilters}
-                    className="text-[10px] text-blue-600 font-bold hover:underline"
-                  >
-                    ሁሉንም አፅዳ
-                  </button>
-                )}
               </div>
 
-              {/* Categories Section (Collapsible) */}
+              {/* Categories */}
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                <button 
-                  onClick={() => toggleSection('categories')}
-                  className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
-                >
+                <button onClick={() => toggleSection('categories')} className="w-full flex items-center justify-between p-4 hover:bg-slate-50">
                   <span className="font-bold text-slate-800 text-sm">ምድቦች</span>
-                  <svg 
-                    className={`w-4 h-4 text-slate-400 transition-transform ${expandedSections.categories ? 'rotate-180' : ''}`} 
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <svg className={`w-4 h-4 transition-transform ${expandedSections.categories ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
-                
                 {expandedSections.categories && (
-                  <div className="p-2 pt-0 space-y-1 animate-in slide-in-from-top-2 duration-200">
+                  <div className="p-2 pt-0 space-y-1">
                     {CATEGORIES.map(cat => (
                       <button 
                         key={cat.id}
                         onClick={() => setActiveCategory(cat.id)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all relative ${
-                          activeCategory === cat.id 
-                            ? 'bg-blue-50 text-blue-700 font-bold' 
-                            : 'text-slate-600 hover:bg-slate-100'
-                        }`}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${activeCategory === cat.id ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-600 hover:bg-slate-100'}`}
                       >
-                        {activeCategory === cat.id && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-600 rounded-r-full"></div>
-                        )}
-                        <span className="text-base" aria-hidden="true">{cat.icon}</span>
+                        <span className="text-base">{cat.icon}</span>
                         <span className="text-sm">{cat.label}</span>
                       </button>
                     ))}
@@ -241,137 +199,55 @@ const App: React.FC = () => {
                 )}
               </div>
 
-              {/* Price Range Section (Collapsible) */}
+              {/* Price Range */}
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                <button 
-                  onClick={() => toggleSection('price')}
-                  className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
-                >
+                <button onClick={() => toggleSection('price')} className="w-full flex items-center justify-between p-4 hover:bg-slate-50">
                   <span className="font-bold text-slate-800 text-sm">ዋጋ (ETB)</span>
-                  <svg 
-                    className={`w-4 h-4 text-slate-400 transition-transform ${expandedSections.price ? 'rotate-180' : ''}`} 
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <svg className={`w-4 h-4 transition-transform ${expandedSections.price ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
-                
                 {expandedSections.price && (
-                  <div className="p-4 pt-0 space-y-4 animate-in slide-in-from-top-2 duration-200">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <label className="text-[10px] text-slate-400 font-bold block mb-1">ዝቅተኛ</label>
-                        <input 
-                          type="number" 
-                          value={priceRange[0]}
-                          onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <label className="text-[10px] text-slate-400 font-bold block mb-1">ከፍተኛ</label>
-                        <input 
-                          type="number" 
-                          value={priceRange[1]}
-                          onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
+                  <div className="p-4 pt-0 space-y-4">
+                    <input 
+                      type="range" min="0" max="1000" step="50"
+                      value={priceRange[1]}
+                      onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                      className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                    />
+                    <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                      <span>0 ETB</span>
+                      <span>{priceRange[1]} ETB</span>
                     </div>
                   </div>
                 )}
               </div>
-
-              {/* Rating Section (Collapsible) */}
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                <button 
-                  onClick={() => toggleSection('rating')}
-                  className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
-                >
-                  <span className="font-bold text-slate-800 text-sm">ደረጃ</span>
-                  <svg 
-                    className={`w-4 h-4 text-slate-400 transition-transform ${expandedSections.rating ? 'rotate-180' : ''}`} 
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                
-                {expandedSections.rating && (
-                  <div className="p-2 pt-0 space-y-1 animate-in slide-in-from-top-2 duration-200">
-                    {[4, 3, 2].map(r => (
-                      <button 
-                        key={r}
-                        onClick={() => setMinRating(minRating === r ? 0 : r)}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
-                          minRating === r ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <RatingStars rating={r} max={5} />
-                          <span className="text-xs font-medium">እና ከዚያ በላይ</span>
-                        </div>
-                        {minRating === r && <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
-              <section className="p-6 bg-slate-900 rounded-3xl text-white relative overflow-hidden shadow-xl" aria-labelledby="promo-title">
-                 <div className="relative z-10">
-                   <h4 id="promo-title" className="font-bold mb-2">ፕሪሚየም አባልነት</h4>
-                   <p className="text-xs text-slate-400 mb-4">በወር 299 ብር ብቻ ሁሉንም መጻሕፍት ያለ ገደብ ያንብቡ።</p>
-                   <button className="w-full py-2.5 bg-blue-600 rounded-xl text-xs font-bold hover:bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900">ይመዝገቡ</button>
-                 </div>
-                 <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-600/20 rounded-full blur-2xl" aria-hidden="true"></div>
-              </section>
             </ScrollReveal>
           </aside>
 
-          {/* Book Grid Area */}
-          <section className="flex-grow" aria-labelledby="books-grid-title">
-            <ScrollReveal className="bg-white rounded-3xl p-6 mb-8 border border-slate-200 shadow-sm">
-               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-                 <div>
-                    <h3 id="books-grid-title" className="text-2xl font-extrabold text-slate-900 mb-1">
-                      {CATEGORIES.find(c => c.id === activeCategory)?.label} መጻሕፍት
-                    </h3>
-                    <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                      <span aria-live="polite">{filteredAndSortedBooks.length} ውጤቶች</span>
-                      {isFiltered && <span className="w-1 h-1 rounded-full bg-slate-300"></span>}
-                      {isFiltered && <span className="text-blue-600 text-[10px] font-bold uppercase tracking-wide">ማጣሪያ ገብቷል</span>}
-                    </div>
-                 </div>
-                 
-                 {/* Enhanced Sorting UI */}
-                 <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                   <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-1">ደርድር፡</span>
-                   <div className="flex bg-slate-100 p-1 rounded-2xl overflow-x-auto scrollbar-hide max-w-full">
-                     {(['default', 'title', 'price-low', 'price-high'] as SortOption[]).map((opt) => (
-                       <button
-                         key={opt}
-                         onClick={() => setSortBy(opt)}
-                         className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                           sortBy === opt 
-                             ? 'bg-white text-blue-600 shadow-sm' 
-                             : 'text-slate-500 hover:text-slate-700'
-                         }`}
-                       >
-                         {opt === 'default' ? 'ተወዳጅ' : 
-                          opt === 'title' ? 'ስም' : 
-                          opt === 'price-low' ? 'ዝቅተኛ ዋጋ' : 'ከፍተኛ ዋጋ'}
-                       </button>
-                     ))}
-                   </div>
-                 </div>
-               </div>
-            </ScrollReveal>
+          {/* Book Grid */}
+          <section className="flex-grow">
+            <div className="bg-white rounded-3xl p-6 mb-8 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-2xl font-extrabold text-slate-900 mb-1">
+                  {CATEGORIES.find(c => c.id === activeCategory)?.label} መጻሕፍት
+                </h3>
+                <span className="text-slate-500 text-sm font-medium">{filteredAndSortedBooks.length} ውጤቶች</span>
+              </div>
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="bg-slate-100 border-none rounded-xl px-4 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="default">ተወዳጅ</option>
+                <option value="title">በስም</option>
+                <option value="price-low">ዝቅተኛ ዋጋ</option>
+                <option value="price-high">ከፍተኛ ዋጋ</option>
+              </select>
+            </div>
 
             {filteredAndSortedBooks.length > 0 ? (
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredAndSortedBooks.map((book, index) => (
-                  <ScrollReveal key={book.id} delay={index * 100}>
+                  <ScrollReveal key={book.id} delay={index * 50}>
                     <BookCard 
                       book={book} 
                       onView={handleOpenDetail} 
@@ -383,7 +259,111 @@ const App: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-24 text-slate-400 bg-white rounded-3xl border border-dashed border-slate-300" role="status">
-                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                  <svg className="w-10 h-10 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1
+              <div className="flex flex-col items-center justify-center py-24 text-slate-400 bg-white rounded-3xl border border-dashed border-slate-300">
+                <svg className="w-16 h-16 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                <p className="font-bold">ምንም መፅሀፍ አልተገኘም</p>
+              </div>
+            )}
+          </section>
+        </div>
+      </main>
+
+      {/* Modals & Overlays */}
+      {previewBook && <BookPreview book={previewBook} onClose={() => setPreviewBook(null)} />}
+      {shareBook && <ShareModal book={shareBook} onClose={() => setShareBook(null)} />}
+      
+      {/* Quick View Modal */}
+      {quickViewBook && (
+        <div className="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setQuickViewBook(null)}>
+          <div className="bg-white rounded-3xl overflow-hidden max-w-2xl w-full flex flex-col md:flex-row shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="md:w-1/2 h-64 md:h-auto">
+              <img src={quickViewBook.coverImage} className="w-full h-full object-cover" alt="" />
+            </div>
+            <div className="p-8 md:w-1/2 flex flex-col">
+              <h2 className="text-2xl font-bold mb-2">{quickViewBook.title}</h2>
+              <p className="text-slate-500 mb-4 font-medium">በ {quickViewBook.author}</p>
+              <RatingStars rating={quickViewBook.rating} className="mb-6" />
+              <p className="text-slate-600 text-sm leading-relaxed mb-8 line-clamp-4">{quickViewBook.description}</p>
+              <div className="mt-auto flex items-center justify-between">
+                <span className="text-2xl font-bold text-blue-600">{quickViewBook.price} ETB</span>
+                <button className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition-colors">አሁን ይግዙ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Book Detail Modal */}
+      {selectedBook && (
+        <div className="fixed inset-0 z-[100] bg-white overflow-y-auto animate-in slide-in-from-bottom-8 duration-300">
+           <div className="max-w-4xl mx-auto py-20 px-4 relative">
+              <button onClick={() => setSelectedBook(null)} className="fixed top-8 right-8 p-3 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors z-[110]">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="flex flex-col md:flex-row gap-12">
+                <div className="md:w-1/3">
+                  <img src={selectedBook.coverImage} className="w-full rounded-2xl shadow-2xl sticky top-24" alt="" />
+                </div>
+                <div className="md:w-2/3 space-y-8">
+                  <div>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full uppercase tracking-wider mb-4 inline-block">{selectedBook.category}</span>
+                    <h2 className="text-4xl md:text-5xl font-black text-slate-900">{selectedBook.title}</h2>
+                    <p className="text-xl text-slate-500 mt-2">በ {selectedBook.author} {selectedBook.year && `(${selectedBook.year})`}</p>
+                  </div>
+                  <RatingStars rating={selectedBook.rating} />
+                  <div className="prose prose-slate max-w-none">
+                    <p className="text-lg text-slate-700 leading-relaxed">{selectedBook.description}</p>
+                  </div>
+                  <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">ዋጋ</p>
+                      <p className="text-3xl font-black text-slate-900">{selectedBook.price} ETB</p>
+                    </div>
+                    <button className="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all transform hover:-translate-y-1">ወደ ቅርጫት ጨምር</button>
+                  </div>
+                </div>
+              </div>
+           </div>
+        </div>
+      )}
+
+      {/* Floating Librarian Button */}
+      {!isLibrarianOpen && (
+        <button 
+          onClick={() => setIsLibrarianOpen(true)}
+          className="fixed bottom-8 right-8 w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-40 group"
+          aria-label="የመጻሕፍት ረዳት ይጠይቁ"
+        >
+          <span className="text-2xl group-hover:animate-bounce">🤖</span>
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></div>
+        </button>
+      )}
+
+      {/* Librarian Side Panel */}
+      {isLibrarianOpen && (
+        <div className="fixed inset-0 z-[150] pointer-events-none">
+          <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm pointer-events-auto" onClick={() => setIsLibrarianOpen(false)}></div>
+          <div className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl pointer-events-auto animate-in slide-in-from-right-full duration-300">
+            <div className="h-full flex flex-col">
+              <div className="p-4 border-b flex items-center justify-between">
+                <h3 className="font-bold">የመጻሕፍት ረዳት</h3>
+                <button onClick={() => setIsLibrarianOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">✕</button>
+              </div>
+              <div className="flex-grow overflow-hidden">
+                <Librarian interactedBooks={interactedBooks} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <footer className="bg-slate-900 text-slate-400 py-12 mt-20">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-sm">© 2025 አዋሽ ዲጅታል መጻሕፍት መደብር። መብቱ የተጠበቀ ነው።</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
