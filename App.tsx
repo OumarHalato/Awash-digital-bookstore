@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { GoogleGenAI, Type } from '@google/genai';
@@ -390,7 +389,7 @@ const Home: React.FC<{
                       </div>
                     </div>
                     <h3 className={`text-2xl font-black mb-3 ${props.isDarkMode ? 'text-white' : 'text-slate-900'}`}>ውጤት አልተገኘም</h3>
-                    <p className="text-slate-500 text-sm max-w-sm mb-8">ለፍለጋዎ የሚሆን መጽሐፍ አላገኘንም። እባክዎ ሌሎችቃላትን ወይም ማጣሪያዎችን በመጠቀም ይሞክሩ።</p>
+                    <p className="text-slate-500 text-sm max-w-sm mb-8">ለፍለጋዎ የሚሆን መጽሐፍ አላገኘንም። እባክዎ ሌሎች ቃላትን ወይም ማጣሪያዎችን በመጠቀም ይሞክሩ።</p>
                     <button onClick={props.clearAllFilters} className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-2xl text-sm font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 dark:shadow-blue-900/30">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                       ፍለጋውን አጽዳ

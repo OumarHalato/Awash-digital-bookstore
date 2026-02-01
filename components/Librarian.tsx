@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Message, Book } from '../types';
@@ -165,4 +164,37 @@ const Librarian: React.FC<LibrarianProps> = ({ interactedBooks = [], isDarkMode 
             className={`flex-grow px-4 py-2.5 rounded-full text-sm outline-none transition-all ${
               isDarkMode 
                 ? 'bg-slate-800 text-slate-100 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-600' 
-                : 'bg-slate-100 border-none focus:ring-2 focus:ring-blue-500 placeholder:text-
+                : 'bg-slate-100 border-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400'
+            }`}
+          />
+          <button 
+            onClick={startListening}
+            className={`p-2.5 rounded-full transition-all shadow-md ${
+              isListening 
+                ? 'bg-red-500 text-white animate-pulse' 
+                : isDarkMode ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+            title="በድምፅ ይጠይቁ"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-20a3 3 0 00-3 3v8a3 3 0 006 0V5a3 3 0 00-3-3z" /></svg>
+          </button>
+          <button 
+            onClick={() => handleSend()}
+            disabled={isTyping || !input.trim()}
+            className="p-2.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:opacity-50 shadow-md shrink-0 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+          </button>
+        </div>
+        <div className="flex justify-end">
+          <button onClick={clearHistory} className={`text-[10px] font-bold transition-colors flex items-center gap-1 ${isDarkMode ? 'text-slate-600 hover:text-red-500' : 'text-slate-400 hover:text-red-500'}`}>
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            ታሪክን አጽዳ
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Librarian;
