@@ -5,9 +5,10 @@ interface RatingStarsProps {
   rating: number;
   max?: number;
   className?: string;
+  isDarkMode?: boolean;
 }
 
-const RatingStars: React.FC<RatingStarsProps> = ({ rating, max = 5, className = "" }) => {
+const RatingStars: React.FC<RatingStarsProps> = ({ rating, max = 5, className = "", isDarkMode = false }) => {
   return (
     <div 
       className={`flex items-center gap-0.5 ${className}`}
@@ -22,7 +23,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating, max = 5, className = 
         return (
           <svg
             key={i}
-            className={`w-4 h-4 ${isFull || isHalf ? 'text-yellow-500' : 'text-slate-300'}`}
+            className={`w-4 h-4 transition-colors duration-300 ${isFull || isHalf ? 'text-yellow-500' : isDarkMode ? 'text-slate-700' : 'text-slate-300'}`}
             fill="currentColor"
             viewBox="0 0 20 20"
             aria-hidden="true"
@@ -31,7 +32,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating, max = 5, className = 
               <defs>
                 <linearGradient id={`halfStar-${i}`}>
                   <stop offset="50%" stopColor="currentColor" />
-                  <stop offset="50%" stopColor="#cbd5e1" stopOpacity="1" />
+                  <stop offset="50%" stopColor={isDarkMode ? "#334155" : "#cbd5e1"} stopOpacity="1" />
                 </linearGradient>
               </defs>
             ) : null}
@@ -42,7 +43,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating, max = 5, className = 
           </svg>
         );
       })}
-      <span className="ml-1 text-xs font-bold text-slate-700" aria-hidden="true">{rating.toFixed(1)}</span>
+      <span className={`ml-1 text-xs font-bold transition-colors duration-300 ${isDarkMode ? 'text-slate-400' : 'text-slate-700'}`} aria-hidden="true">{rating.toFixed(1)}</span>
     </div>
   );
 };

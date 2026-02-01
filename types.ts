@@ -10,6 +10,7 @@ export interface Book {
   rating: number;
   year?: string;
   previewPages?: string[];
+  isNew?: boolean;
 }
 
 export interface Category {
@@ -22,3 +23,6 @@ export interface Message {
   role: 'user' | 'model';
   text: string;
 }
+
+// Added SortOption type to fix "Cannot find name 'SortOption'" error in App.tsx
+export type SortOption = 'default' | 'title' | 'author' | 'price-low' | 'price-high';

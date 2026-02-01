@@ -5,9 +5,10 @@ import { Book } from '../types';
 interface BookPreviewProps {
   book: Book;
   onClose: () => void;
+  isDarkMode?: boolean;
 }
 
-const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose }) => {
+const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose, isDarkMode = false }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const pages = book.previewPages || [
     "ይህ መፅሀፍ በአሁኑ ሰዓት የቅምሻ ገጾች የሉትም።",
@@ -27,7 +28,7 @@ const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] bg-slate-900/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300"
       role="dialog"
       aria-modal="true"
       aria-labelledby="preview-title"
@@ -48,35 +49,35 @@ const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose }) => {
         </div>
 
         {/* Book Spread View */}
-        <div className="relative w-full max-w-3xl aspect-[1.4/1] bg-white rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex overflow-hidden perspective-1000">
+        <div className={`relative w-full max-w-3xl aspect-[1.4/1] rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex overflow-hidden perspective-1000 border border-white/10 ${isDarkMode ? 'opacity-90' : ''}`}>
           {/* Middle Spine Shadow */}
           <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 bg-gradient-to-r from-black/10 via-black/5 to-black/10 z-10 pointer-events-none"></div>
 
-          {/* Left Page (Paper Texture) */}
-          <div className="flex-1 bg-[#fcfaf2] p-8 md:p-12 relative overflow-hidden flex flex-col">
+          {/* Left Page */}
+          <div className={`flex-1 p-8 md:p-12 relative overflow-hidden flex flex-col transition-colors duration-500 ${isDarkMode ? 'bg-[#d1c9b8]' : 'bg-[#fcfaf2]'}`}>
             <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/parchment.png')]"></div>
             <div className="relative z-10 flex flex-col h-full">
-              <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-8">{book.author}</span>
+              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-8">{book.author}</span>
               <div className="flex-grow flex items-center justify-center">
-                <div className="text-slate-300 transform -rotate-12 opacity-5">
+                <div className="text-slate-900 transform -rotate-12 opacity-5">
                    <svg className="w-48 h-48" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/></svg>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs font-bold mt-auto text-center">{currentPage * 2 + 1}</p>
+              <p className="text-slate-500 text-xs font-bold mt-auto text-center">{currentPage * 2 + 1}</p>
             </div>
           </div>
 
           {/* Right Page (Content) */}
-          <div className="flex-1 bg-[#fcfaf2] p-8 md:p-12 relative overflow-hidden flex flex-col border-l border-slate-200">
+          <div className={`flex-1 p-8 md:p-12 relative overflow-hidden flex flex-col border-l border-black/10 transition-colors duration-500 ${isDarkMode ? 'bg-[#d1c9b8]' : 'bg-[#fcfaf2]'}`}>
              <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/parchment.png')]"></div>
              <div className="relative z-10 flex flex-col h-full">
                 <div className="flex-grow animate-in slide-in-from-right-4 fade-in duration-500 key={currentPage}">
-                   <p className="text-slate-800 text-lg md:text-xl leading-relaxed font-serif italic mb-6">
+                   <p className="text-slate-900 text-lg md:text-xl leading-relaxed font-serif italic mb-6">
                       "{pages[currentPage]}"
                    </p>
-                   <div className="w-12 h-0.5 bg-blue-500 mb-4"></div>
+                   <div className="w-12 h-0.5 bg-blue-600 mb-4"></div>
                 </div>
-                <p className="text-slate-400 text-xs font-bold mt-auto text-center">{currentPage * 2 + 2}</p>
+                <p className="text-slate-500 text-xs font-bold mt-auto text-center">{currentPage * 2 + 2}</p>
              </div>
           </div>
 
