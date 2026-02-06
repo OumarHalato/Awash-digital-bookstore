@@ -6,9 +6,17 @@ interface BookPreviewProps {
   book: Book;
   onClose: () => void;
   isDarkMode?: boolean;
+  onToggleBookmark?: (bookId: string) => void;
+  isBookmarked?: boolean;
 }
 
-const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose, isDarkMode = false }) => {
+const BookPreview: React.FC<BookPreviewProps> = ({ 
+  book, 
+  onClose, 
+  isDarkMode = false,
+  onToggleBookmark,
+  isBookmarked = false
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const pages = book.previewPages || [
     "ይህ መፅሀፍ በአሁኑ ሰዓት የቅምሻ ገጾች የሉትም።",
@@ -43,8 +51,21 @@ const BookPreview: React.FC<BookPreviewProps> = ({ book, onClose, isDarkMode = f
           <span className="text-xl">✕</span>
         </button>
 
-        <div className="text-center">
-          <h2 id="preview-title" className="text-2xl font-bold text-white mb-1">{book.title}</h2>
+        <div className="text-center flex flex-col items-center">
+          <div className="flex items-center gap-3">
+            <h2 id="preview-title" className="text-2xl font-bold text-white mb-1">{book.title}</h2>
+            {onToggleBookmark && (
+              <button 
+                onClick={() => onToggleBookmark(book.id)}
+                className={`transition-all p-1.5 rounded-full ${isBookmarked ? 'text-yellow-500 bg-yellow-500/10' : 'text-white/40 hover:text-white hover:bg-white/10'}`}
+                title="መግለጫውን ምልክት አድርግ"
+              >
+                <svg className="w-5 h-5" fill={isBookmarked ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+              </button>
+            )}
+          </div>
           <p className="text-blue-400 text-sm font-medium">የተመረጡ ገጾች (Preview Mode)</p>
         </div>
 

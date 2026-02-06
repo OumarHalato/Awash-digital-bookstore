@@ -1,3 +1,4 @@
+
 export interface Book {
   id: string;
   title: string;
@@ -23,5 +24,5 @@ export interface Message {
   text: string;
 }
 
-// በ App.tsx ላይ የሚታየውን ስህተት ለመፍታት የተጨመረ
-export type SortOption = 'default' | 'title' | 'author' | 'price-low' | 'price-high';
+// Added SortOption type to fix "Cannot find name 'SortOption'" error in App.tsx
+export type SortOption = 'default' | 'title' | 'author' | 'price-low' | 'price-high' | 'year-newest' | 'year-oldest';

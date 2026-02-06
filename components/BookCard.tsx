@@ -29,8 +29,8 @@ const BookCard: React.FC<BookCardProps> = ({
   isDarkMode = false
 }) => {
   return (
-    <article className={`group rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border flex flex-col h-full focus-within:ring-2 focus-within:ring-blue-500 ${
-      isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'
+    <article className={`group rounded-xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 hover:scale-[1.02] transition-all duration-300 overflow-hidden border flex flex-col h-full focus-within:ring-2 focus-within:ring-blue-500 ${
+      isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-100 hover:border-slate-200'
     }`}>
       <div className="relative overflow-hidden aspect-[2/3]">
         <img 
@@ -58,19 +58,19 @@ const BookCard: React.FC<BookCardProps> = ({
         </div>
 
         {/* Action Buttons Overlays (Share and Read Later) */}
-        <div className="absolute top-2 left-2 flex flex-row gap-2">
+        <div className="absolute top-2 left-2 flex flex-row gap-2 z-10">
           <button 
             onClick={(e) => {
               e.stopPropagation();
               onShare(book);
             }}
-            className={`w-8 h-8 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:text-blue-500 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm ${
-              isDarkMode ? 'bg-slate-800/90 text-slate-300' : 'bg-white/90 text-slate-700'
+            className={`w-9 h-9 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg ${
+              isDarkMode ? 'bg-slate-800/90 text-slate-300 hover:text-blue-400' : 'bg-white/90 text-slate-700 hover:text-blue-600'
             }`}
             aria-label={`${book.title} አጋራ (Share ${book.title})`}
-            title="አጋራ"
+            title="አጋራ (Share)"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
           </button>
@@ -80,15 +80,15 @@ const BookCard: React.FC<BookCardProps> = ({
               e.stopPropagation();
               onToggleReadLater(book);
             }}
-            className={`w-8 h-8 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm ${
+            className={`w-9 h-9 backdrop-blur-md rounded-full flex items-center justify-center transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg ${
               isReadLater 
                 ? 'bg-blue-600 text-white opacity-100' 
-                : `${isDarkMode ? 'bg-slate-800/90 text-slate-300' : 'bg-white/90 text-slate-700'} opacity-0 group-hover:opacity-100`
+                : `${isDarkMode ? 'bg-slate-800/90 text-slate-300 hover:text-blue-400' : 'bg-white/90 text-slate-700 hover:text-blue-600'} opacity-0 group-hover:opacity-100`
             }`}
             aria-label={isReadLater ? 'ከቆይቶ ላንብብ አስወጣ' : 'ቆይቶ ላንብብ ውስጥ ክተት'}
             title={isReadLater ? "ከቆይቶ ላንብብ አስወጣ" : "ቆይቶ ላንብብ ውስጥ ክተት"}
           >
-            <svg className="w-4 h-4" fill={isReadLater ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4.5 h-4.5" fill={isReadLater ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
           </button>
