@@ -1,0 +1,43 @@
+name: SLSA generic generator
+on:
+  workflow_dispatch: # በእጅህ ለመቀስቀስ
+  release:
+    types: [created] # አዲስ ሪሊዝ ሲወጣ በራሱ እንዲሰራ
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      digests: ${{ steps.hash.outputs.digests }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- ደረጃ 1፡ ሶፍትዌርህን እዚህ ጋር ገንባ ---
+      - name: Build artifacts
+        run: |
+          # እዚህ ጋር የራስህን የቢልድ ትዕዛዝ ተካ (ለምሳሌ npm run build ወይም go build)
+          echo "my-awesome-software-v1" > my-artifact.txt
+          echo "documentation" > docs.txt
+
+      # --- ደረጃ 2፡ የፋይሎቹን ዲጂታል አሻራ (Hash) አውጣ ---
+      - name: Generate subject for provenance
+        id: hash
+        run: |
+          set -euo pipefail
+          # 'my-artifact.txt' የሚለውን አንተ በምትፈጥረው የፋይል ስም ቀይረው
+          files=$(ls my-artifact.txt docs.txt)
+          echo "hashes=$(sha256sum $files | base64 -w0)" >> "${GITHUB_OUTPUT}"
+
+  # --- ደረጃ 3፡ የ SLSA ማረጋገጫውን አመንጭ ---
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write   # ለማረጋገጫ (Identity) አስፈላጊ ነው
+      contents: write   # ውጤቱን ወደ ሪሊዝ ለመጫን አስፈላጊ ነው
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.digests }}"
+      upload-assets: true # ውጤቱን ወደ GitHub Release እንዲጭነው
